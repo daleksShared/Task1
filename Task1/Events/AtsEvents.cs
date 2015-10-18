@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Task1
 {
-    partial class ATS
+    public partial class ModelAts
     {
         public class LineUpEventArgs : System.EventArgs
         {
@@ -61,7 +61,9 @@ namespace Task1
             // уведомления о событии, уведомляем их
             if (temp != null) temp(this, e);
         }
-    
+
+
+      
     }
 
   

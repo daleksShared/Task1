@@ -21,18 +21,16 @@ namespace Task1.Data
                reader.Close();
                return obj;
            }
-           //public void SerializeToPath<T>(T obj,string filepath)
-           //{
-               
-           //    XmlSerializer serializer = new XmlSerializer(typeof(obj));
+        public void SerializeToPath<T>(T obj, string filepath)
+        { 
+            XmlSerializer ser = new XmlSerializer(typeof(T));
+            using (FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate))
+            {
+                ser.Serialize(fs, obj);
+                
+            }
+        }
 
-           //    XmlSerializer ser = new XmlSerializer(typeof(T));
-           //    using (XmlWriter writer = XmlWriter.Create(filepath))
-           //    {
-           //        ser.Serialize(writer,obj);
-           //    }
-           //}
-
-       }
+    }
     
 }
