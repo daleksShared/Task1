@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Task1
 {
-    public class Caller
+    partial class ATS
     {
-        public int Id { get; set; }
-        public Contract Contract { get; set; }
-        public List<Port> Ports;
-
-        
-       
+        public class Caller
+        {
+            public int Id { get; set; }
+            public Contract Contract { get; set; }
+            public List<Port> Ports {get;set;}
+        }
     }
 }

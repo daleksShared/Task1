@@ -7,67 +7,35 @@ using System.Text;
 
 namespace Task1
 {
-    internal class LineUpEventArgs : System.EventArgs
+  
+
+    partial class ATS
     {
-        private readonly int _portId, _callerId;
-
-        public LineUpEventArgs(int portId, int callerId)
+        public System.Timers.Timer billingGlobalTimer=new System.Timers.Timer();
+        public static void billingGlobalTimerRaise(Object source, System.Timers.ElapsedEventArgs e)
         {
-            _portId = portId;
-            _callerId = callerId;
+            //update customers
+           
         }
 
-        public int PortId
-        {
-            get { return _portId; }
+        public ATS() {
+
+            //timerInit
+            billingGlobalTimer.Interval = (DateTime.Today.AddMonths(1).AddDays(-(DateTime.Today.Day - 1)) - DateTime.Now).TotalMilliseconds;
+            billingGlobalTimer.Elapsed += billingGlobalTimerRaise;
+            billingGlobalTimer.AutoReset = false;
+            billingGlobalTimer.Enabled = true;
         }
 
-        public int CallerId
-        {
-            get { return _callerId; }
-        }
-    }
-    internal class CallerInsertSymbolEventArgs : System.EventArgs
-    {
-        private readonly char _symbol;
-        private readonly int _callerId;
-
-        public CallerInsertSymbolEventArgs(int callerId, char symbol)
-        {
-            _symbol = symbol;
-            _callerId = callerId;
-        }
-
-        public int Symbol
-        {
-            get { return _symbol; }
-        }
-
-        public int CallerId
-        {
-            get { return _callerId; }
-        }
-    }
-
-    internal class ATS
-    {
-        public event EventHandler<LineUpEventArgs> LineUpEvent;
-
-        public delegate void EventHandler(Object sender, LineUpEventArgs e);
-
-
-        public ATS()
-        {
-        } // для xml сериализации пустой конструктор
 
 
 
 
-        public List<CallerId> CallerIds;
-        public List<Port> Ports;
-        public List<Caller> Callers;
-        public List<Call> CallHistory;
-        public List<Billing> Billing;
+        public List<CallerId> CallerIds{get;set;}
+        public List<Port> Ports { get; set; }
+        public List<Caller> Callers { get; set; }
+        public List<Call> CallHistory { get; set; }
+        public List<Billing> BillingCalls { get; set; }
 
         
 
@@ -76,12 +44,14 @@ namespace Task1
 
         public void LineUp(int portId,int callerId)
         {
-            EventHandler<LineUpEventArgs> handler = LineUpEvent;
-            if (handler != null)
-            {
-                LineUpEventArgs e = new LineUpEventArgs(portId,callerId);
-                handler(this,e);
-            }
+            LineUpEventArgs e = new LineUpEventArgs(portId, callerId);
+            OnLineUp(e);
+            //EventHandler<LineUpEventArgs> lineUpHandler += LineUpEvent;
+            //if (lineUpHandler != null)
+            //{
+            //    LineUpEventArgs e = new LineUpEventArgs(portId,callerId);
+            //    lineUpHandler(this, e);
+            //}
         }
 
         public void GetCallHistory(int callerId)
@@ -117,24 +87,24 @@ namespace Task1
             }
         }
 
-        private float GetCallCost(int callerId, DateTime starTime)
+        public float GetCallCost(int callerId, DateTime starTime)
         {
             var cost =
-                Billing.Where(x => x.CallerId == callerId && x.StarTime == starTime)
+                BillingCalls.Where(x => x.CallerId == callerId && x.StarTime == starTime)
                     .Select(x => new {cost = ((float) x.Duration.TotalSeconds*x.Contract.Tarrif.MinuteCost)})
                     .FirstOrDefault();
             return cost == null ? 0 : cost.cost;
         }
 
         #endregion
-    }
+    
 
     #region Классы параметров АТС
 
     public class Call
     {
-        public DateTime StarTime;
-        public TimeSpan Duration;
+        public DateTime StarTime { get; set; }
+        public TimeSpan Duration { get; set; }
         public Caller Caller { get; set; }
         public Caller Callee { get; set; }
 
@@ -162,5 +132,5 @@ namespace Task1
 
     #endregion
 
-   
+    }
 }

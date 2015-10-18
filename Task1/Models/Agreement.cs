@@ -6,53 +6,52 @@ using System.Text;
 
 namespace Task1
 {
-    public partial class Contract
+    partial class ATS
     {
-        public int Id { get; set; }
-        private string number="";
-        public string Number
+        public class Contract
         {
-            get { return number; }
-            set
+            public int Id { get; set; }
+            public string number = "";
+            public string Number
             {
-                if (value == string.Empty)
+                get { return number; }
+                set
                 {
-                    throw new System.ArgumentException("Номер договора не может быть пустым!!!");
-                }
-                else
-                {
-                    number = value;
+                    if (value == string.Empty)
+                    {
+                        throw new System.ArgumentException("Номер договора не может быть пустым!!!");
+                    }
+                    else
+                    {
+                        number = value;
+                    }
                 }
             }
+
+            public DateTime ContractDate { get; set; }
+            public ContractType AgreementType { get; set; }
+            public Tarrif Tarrif { get; set; }
+
         }
 
-        public DateTime ContractDate { get; set; }
-        public ContractType AgreementType { get; set; }
-        public Tarrif Tarrif { get; set; }
+        public class CallTarrif
+        {
+            public string Name { get; set; }
+            public float MinuteCost { get; set; }
+        }
 
-    }
+      
+        public enum ContractType
+        {
+            Debet,
+            Credit
+        }
 
-    public class CallTarrif
-    {
-        public string Name { get; set; }
-        public float MinuteCost{ get; set; }
+        public class Tarrif
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public float MinuteCost { get; set; }
+        }
     }
-
-    public class Customer
-    {
-        
-    }
-    public enum ContractType
-    {
-        Debet,
-        Credit
-    }
-
-    public class Tarrif
-    {
-        public int Id { get; set; }
-        public string Name { get; set;}
-        public float MinuteCost { get; set; }
-    }
-
 }

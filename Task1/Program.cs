@@ -17,7 +17,9 @@ namespace Task1
 
 
             var ats= new ATS();
+
             ats.GetCallHistory(1);
+
             Console.ReadKey();
         }
     }
