@@ -19,5 +19,28 @@ namespace Task1
             if (temp != null) temp(sender, e);
         }
     }
+    public abstract class Idispose : IDisposable
+    {
+        bool disposed = false;
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
 
+            if (disposing)
+            {
+                // Free any other managed objects here.
+                //
+            }
+
+            // Free any unmanaged objects here.
+            //
+            disposed = true;
+        }
+    }
 }

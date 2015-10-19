@@ -41,36 +41,16 @@ namespace Task1
     // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
 
     // public virtual DbSet<MyEntity> MyEntities { get; set; }
+    
 
-
-    public class Caller:IDisposable
+    public class Caller:Idispose
     {
         public int Id { get; set; }
         public int CallerId { get; set; }
 
 
 
-        bool disposed = false;
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
-
-            if (disposing)
-            {
-                // Free any other managed objects here.
-                //
-            }
-
-            // Free any unmanaged objects here.
-            //
-            disposed = true;
-        }
+       
     }
     public class Billing
     {
@@ -127,7 +107,7 @@ namespace Task1
 
     }
 
-    public class Tarrif
+    public class Tarrif:Idispose
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -163,7 +143,7 @@ namespace Task1
 
     }
 
-    public class Port:IDisposable
+    public class Port:Idispose
     {
         public int Id { get; set; }
         public int PortNum { get; set; }
@@ -175,27 +155,7 @@ namespace Task1
         public bool Captured { get; set; }
 
 
-        bool disposed = false;
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
-
-            if (disposing)
-            {
-                // Free any other managed objects here.
-                //
-            }
-
-            // Free any unmanaged objects here.
-            //
-            disposed = true;
-        }
+      
     }
 
   

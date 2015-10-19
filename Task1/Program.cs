@@ -35,7 +35,16 @@ namespace Task1
                 }
             }
 
-            ats.SaveChanges();
+            using (var tarrif = new Tarrif
+            {
+                Name = "1cent",
+                MinuteCost = 0.01f
+            })
+            {
+                ats.CallTarrifs.Add(tarrif);
+            }
+
+                ats.SaveChanges();
             
             ats.GetCallHistory(1);
 
