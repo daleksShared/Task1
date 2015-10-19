@@ -6,9 +6,16 @@ namespace Task1
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using Microsoft.Win32.SafeHandles;
+    using System.Threading;
+    using System.ComponentModel;
+    using Enums;
 
     public partial class ModelAts : DbContext
     {
+        public System.Timers.Timer billingGlobalTimer = new System.Timers.Timer();
+
+
+
         // Your context has been configured to use a 'ModelAts' connection string from your application's 
         // configuration file (App.config or Web.config). By default, this connection string targets the 
         // 'Task1.ModelAts' database on your LocalDb instance. 
@@ -82,15 +89,7 @@ namespace Task1
         public Caller Callee { get; set; }
         public LogAction LogAction { get; set; }
     }
-    public enum LogAction
-    {
-        LineUp,
-        LineClose,
-        LineBusy,
-        CallStarted,
-        CallEnded
-    }
-
+    
     public class Contract
     {
         public int Id { get; set; }
@@ -126,19 +125,6 @@ namespace Task1
     }
 
 
-    public enum ContractType
-    {
-        Debet,
-        Credit
-    }
-    
-    public enum PortState
-    {
-        Opened,
-        Closed
-    }
-
-
 
 
 
@@ -156,6 +142,38 @@ namespace Task1
         public Caller Caller { get; set; }
         public Caller Callee { get; set; }
 
+        private CallerTerminalState _terminalState;
+        public CallerTerminalState TerminalState
+        {
+            get { return _terminalState; }
+            set
+            {
+                switch (value)
+                {
+                    case CallerTerminalState.On:
+                        conne
+                        break;
+                        
+                    case CallerTerminalState.Off:
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        }
+
+        public void ConnectToPort(TerminalState terminalState)
+        {
+            var args = new PortEventArgs()
+            {
+                ConnectionPortResult = ConnectionPortResult.Default,
+                PortStateForAts = PortStateForAts.Default,
+                TerminalState = terminalState
+            };
+            OnConnecting(this, args);
+        }
+
     }
 
     public class Port:Idispose
@@ -170,13 +188,8 @@ namespace Task1
         public bool Captured { get; set; }
         private PortState _state;
         public PortState State { get { return State; } set { _state = value; } }
-        public void SetPortState(PortState newState)
-        {
-            _state = newState;
-            LineUpEventArgs e = new LineUpEventArgs(this);
-            OnLineUp(e);
-        }
     }
+   
 
-  
+
 }
