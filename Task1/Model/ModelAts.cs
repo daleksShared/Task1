@@ -23,7 +23,6 @@ namespace Task1
             : base(sqlcon)
         {
             billingGlobalTimer.Interval = (DateTime.Today.AddMonths(1).AddDays(-(DateTime.Today.Day - 1)) - DateTime.Now).TotalMilliseconds;
-            billingGlobalTimer.Elapsed += billingGlobalTimerRaise;
             billingGlobalTimer.AutoReset = false;
             billingGlobalTimer.Enabled = true;
         }
@@ -45,9 +44,21 @@ namespace Task1
 
     public class Caller:Idispose
     {
+        private int _canChangeTarrif = 0;
         public int Id { get; set; }
         public int CallerId { get; set; }
+        public Nullable<int> CanChangeTarrif
+        {
+            get
+            {
+                return _canChangeTarrif;
+            }
+            set
+            {
 
+                _canChangeTarrif = value == null ? 0 : (int)value;
+            }
+        }
 
 
        
@@ -121,7 +132,11 @@ namespace Task1
         Credit
     }
     
-
+    public enum PortState
+    {
+        Opened,
+        Closed
+    }
 
 
 
@@ -153,9 +168,14 @@ namespace Task1
         }
         public Caller Caller { get; set; }
         public bool Captured { get; set; }
-
-
-      
+        private PortState _state;
+        public PortState State { get { return State; } set { _state = value; } }
+        public void SetPortState(PortState newState)
+        {
+            _state = newState;
+            LineUpEventArgs e = new LineUpEventArgs(this);
+            OnLineUp(e);
+        }
     }
 
   

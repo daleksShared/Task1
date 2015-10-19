@@ -13,8 +13,25 @@ namespace Task1
         static void Main(string[] args)
         {
             ats= new ModelAts(@"data source=(localdb)\MSSQLLocalDB;Initial Catalog=Task1;Integrated Security=True;");
+
+            ats.billingGlobalTimer.Elapsed += BillingGlobalTimer_Elapsed;
+
+
+            DbInit();
+            
+            ats.GetCallHistory(1);
+            
+            Console.ReadKey();
+        }
+
+        private static void BillingGlobalTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void DbInit()
+        {
             Database.SetInitializer<ModelAts>(new DropCreateDatabaseAlways<ModelAts>());
-            ;
             for (int i = 0; i < 999; i++)
             {
                 using (var port = new Port
@@ -23,7 +40,7 @@ namespace Task1
                     Captured = false
                 })
                 {
-                   ats.Ports.Add(port);
+                    ats.Ports.Add(port);
                     using (var caller = new Caller
                     {
                         CallerId = 2000 + i
@@ -43,12 +60,24 @@ namespace Task1
             {
                 ats.CallTarrifs.Add(tarrif);
             }
+            using (var tarrif = new Tarrif
+            {
+                Name = "5cent",
+                MinuteCost = 0.05f
+            })
+            {
+                ats.CallTarrifs.Add(tarrif);
+            }
+            using (var tarrif = new Tarrif
+            {
+                Name = "100cent",
+                MinuteCost = 1f
+            })
+            {
+                ats.CallTarrifs.Add(tarrif);
+            }
 
-                ats.SaveChanges();
-            
-            ats.GetCallHistory(1);
-
-            Console.ReadKey();
+            ats.SaveChanges();
         }
     }
 }

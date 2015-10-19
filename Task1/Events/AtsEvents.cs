@@ -8,38 +8,49 @@ namespace Task1
 {
     public partial class ModelAts
     {
+        public System.Timers.Timer billingGlobalTimer = new System.Timers.Timer();
+
+    }
+
+
         public class LineUpEventArgs : System.EventArgs
         {
-            public readonly int _portId, _callerId;
+            public readonly Port _port;
+            public readonly Caller _caller;
 
-            public LineUpEventArgs(int portId, int callerId)
+            public LineUpEventArgs(Port port)
             {
-                _portId = portId;
-                _callerId = callerId;
+                _port = port;
+
             }
 
-            public int PortId
+            public Port PortId
             {
-                get { return _portId; }
+                get { return _port; }
             }
 
-            public int CallerId
-            {
-                get { return _callerId; }
-            }
+
         }
-        public event EventHandler<LineUpEventArgs> LineUpEvent;
 
+        public event EventHandler<LineUpEventArgs> LineUpEvent;
+        protected virtual void OnLineUp(LineUpEventArgs e)
+        {
+            EventHandler<LineUpEventArgs> temp = Volatile.Read(ref LineUpEvent);
+            // Если есть объекты, зарегистрированные для получения
+            // уведомления о событии, уведомляем их
+            if (temp != null) temp(this, e);
+
+        }
 
         public class CallerInsertSymbolEventArgs : System.EventArgs
         {
             public readonly char _symbol;
-            public readonly int _callerId;
+            public readonly Caller _caller;
 
-            public CallerInsertSymbolEventArgs(int callerId, char symbol)
+            public CallerInsertSymbolEventArgs(Caller caller, char symbol)
             {
                 _symbol = symbol;
-                _callerId = callerId;
+                _caller = caller;
             }
 
             public int Symbol
@@ -47,24 +58,16 @@ namespace Task1
                 get { return _symbol; }
             }
 
-            public int CallerId
+            public Caller Caller
             {
-                get { return _callerId; }
+                get { return _caller; }
             }
         }
-        protected virtual void OnLineUp(LineUpEventArgs e)
-        {
-            // Сохранить ссылку на делегата во временной переменной
-            // для обеспечения безопасности потоков
-            EventHandler<LineUpEventArgs> temp = Volatile.Read(ref LineUpEvent);
-            // Если есть объекты, зарегистрированные для получения
-            // уведомления о событии, уведомляем их
-            if (temp != null) temp(this, e);
-        }
 
 
-      
+
+
     }
 
   
-}
+
