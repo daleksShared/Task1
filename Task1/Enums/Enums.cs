@@ -39,8 +39,8 @@ namespace Task1.Enums
     }
     public enum ConnectCallerResultState
     {
-        Busy,
-        Default= Busy,
+        TargetBusy,
+        Default= TargetBusy,
         NoSuchCaller,
         NoAnswer,
         Ok

@@ -144,7 +144,6 @@ namespace Task1
             ListenerCallFromPortToCaller = new Dictionary<Port, CallerDelegate>();
             ListenerCallFromCallerToAts = new Dictionary<Port, CallerDelegate>();
             ListenerHangUpFromTerminalToPort = new Dictionary<ModelAts, HangUpDelegate>();
-            ListenerHangUpFromPortToTerminal = new Dictionary<ModelAts, HangUpDelegate>();
         }
 
         public void ClearListeners()
@@ -154,7 +153,6 @@ namespace Task1
             ListenerCallFromPortToCaller.Clear();
             ListenerCallFromCallerToAts.Clear();
             ListenerHangUpFromTerminalToPort.Clear();
-            ListenerHangUpFromPortToTerminal.Clear();
         }
 
 

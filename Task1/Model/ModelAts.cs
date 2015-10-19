@@ -66,8 +66,20 @@ namespace Task1
                 _canChangeTarrif = value == null ? 0 : (int)value;
             }
         }
+        private EventHandler<ConnectCallerResultState> _connectingHandler;
 
+        public event EventHandler<ConnectCallerResultState> AfterCallEnded;
 
+        private CallerTerminalState _terminalState;
+        public CallerTerminalState TerminalState
+        {
+            get { return _terminalState; }
+            set
+            {
+
+            }
+
+        }
        
     }
     public class Billing

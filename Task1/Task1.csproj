@@ -57,15 +57,13 @@
     <Compile Include="Data\StoreXML.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="InitDB\FirstRun.cs" />
-    <Compile Include="Listeners\Listeners.cs" />
-    <Compile Include="Listeners\Delegates.cs" />
+    <Compile Include="Tools\Delegates.cs" />
     <Compile Include="Model\ModelAts.cs" />
-    <Compile Include="Listeners\EventArgs.cs" />
+    <Compile Include="Tools\EventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Tools\Queries.cs" />
-    <Compile Include="Tools\Subscribers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
