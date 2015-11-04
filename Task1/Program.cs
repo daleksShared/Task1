@@ -51,6 +51,15 @@ namespace Task1
                     }
                 }
             }
+            using (var terminal = new Terminal
+            {
+                TerminalState = Enums.TerminalState.Off
+                
+            })
+            {
+                ats.Terminals.Add(terminal);
+
+            }
 
             using (var tarrif = new Tarrif
             {

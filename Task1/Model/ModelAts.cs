@@ -9,9 +9,11 @@ namespace Task1
     using System.Threading;
     using System.ComponentModel;
     using Enums;
+    using Task1.EventArgs;
 
     public partial class ModelAts : DbContext
     {
+        private Listeneners listeners = new Listeneners();
         public System.Timers.Timer billingGlobalTimer = new System.Timers.Timer();
 
 
@@ -29,7 +31,9 @@ namespace Task1
         public ModelAts(string sqlcon)
             : base(sqlcon)
         {
-            billingGlobalTimer.Interval = (DateTime.Today.AddMonths(1).AddDays(-(DateTime.Today.Day - 1)) - DateTime.Now).TotalMilliseconds;
+            //  billingGlobalTimer.Interval = (DateTime.Today.AddMonths(1).AddDays(-(DateTime.Today.Day - 1)) - DateTime.Now).TotalMilliseconds;
+
+            billingGlobalTimer.Interval = (DateTime.Today.AddDays(1)- DateTime.Now.AddSeconds(-1)).TotalMilliseconds;
             billingGlobalTimer.AutoReset = false;
             billingGlobalTimer.Enabled = true;
         }
@@ -41,19 +45,38 @@ namespace Task1
         public DbSet<AtsLog> AtsLog { get; set; }
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<Tarrif> CallTarrifs { get; set; }
+        public DbSet<Terminal> Terminals{ get; set; }
+
 
     }
     // Add a DbSet for each entity type that you want to include in your model. For more information 
     // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
 
     // public virtual DbSet<MyEntity> MyEntities { get; set; }
-    
 
-    public class Caller:Idispose
+    public class Terminal : Idispose
+    {
+        public int ID { get; set; }
+        public Caller TerminalUser { get; set; }
+        public Port TerminalPort { get; set; }
+        private TerminalState _terminalState;
+        public TerminalState TerminalState { get { return _terminalState; }
+            set { _terminalState = value; }
+        }
+
+
+
+    }
+
+        public partial class Caller:Idispose
     {
         private int _canChangeTarrif = 0;
         public int Id { get; set; }
-        public int CallerId { get; set; }
+        private int _CallerId;
+        public int CallerId {
+            get { return _CallerId; }
+            set { _CallerId = value; }
+        }
         public Nullable<int> CanChangeTarrif
         {
             get
@@ -66,21 +89,12 @@ namespace Task1
                 _canChangeTarrif = value == null ? 0 : (int)value;
             }
         }
-        private EventHandler<ConnectCallerResultState> _connectingHandler;
 
-        public event EventHandler<ConnectCallerResultState> AfterCallEnded;
 
-        private CallerTerminalState _terminalState;
-        public CallerTerminalState TerminalState
-        {
-            get { return _terminalState; }
-            set
-            {
+        private static object CallerSync = new object();
 
-            }
+      
 
-        }
-       
     }
     public class Billing
     {
@@ -146,7 +160,7 @@ namespace Task1
 
 
 
-    public class Call
+    public partial class Call
     {
         public int Id { get; set; }
         public DateTime StarTime { get; set; }
@@ -154,37 +168,11 @@ namespace Task1
         public Caller Caller { get; set; }
         public Caller Callee { get; set; }
 
-        private CallerTerminalState _terminalState;
-        public CallerTerminalState TerminalState
-        {
-            get { return _terminalState; }
-            set
-            {
-                switch (value)
-                {
-                    case CallerTerminalState.On:
-                        conne
-                        break;
-                        
-                    case CallerTerminalState.Off:
-                        break;
-                    default:
-                        break;
-                }
-            }
 
-        }
 
-        public void ConnectToPort(TerminalState terminalState)
-        {
-            var args = new PortEventArgs()
-            {
-                ConnectionPortResult = ConnectionPortResult.Default,
-                PortStateForAts = PortStateForAts.Default,
-                TerminalState = terminalState
-            };
-            OnConnecting(this, args);
-        }
+        private EventHandler<ConnectCallerResultState> _connectingHandler;
+
+        public event EventHandler<ConnectCallerResultState> AfterCallEnded;
 
     }
 

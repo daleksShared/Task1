@@ -10,7 +10,7 @@ namespace Task1
 
     // callerId <-> port <-> ATS
     //caller -> calle = caller terminal state -> callerPort state -> callee port state -> callee terminal state
-    public delegate void PortStatusChangeEventHandler(object sender,LineUpEventArgs e);
+    public delegate void PortStatusChangeEventHandler(object sender, HangUpEventArgs e);
     public delegate void HangUpDelegate(object sender, HangUpEventArgs e);
     public delegate void CallerDelegate(object sender, System.EventArgs e);
     public class Listeneners
@@ -116,7 +116,7 @@ namespace Task1
             }
         }
 
-        public Dictionary<ModelAts, HangUpDelegate> ListenerHangUpFromPortToTerminal { get; set; };
+        public Dictionary<ModelAts, HangUpDelegate> ListenerHangUpFromPortToTerminal { get; set; }
         public void AddListenerHangUpFromPortToTerminal(ModelAts ats, HangUpDelegate listener)
         {
             if (listener == null) return;

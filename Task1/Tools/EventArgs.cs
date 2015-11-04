@@ -50,7 +50,7 @@ namespace Task1.EventArgs
     }
     public class PortEventArgs : System.EventArgs
     {
-        public CallerTerminalState CallerTerminalState { get; set; }
+        public TerminalState TerminalState { get; set; }
         public PortState PortState { get; set; }
         public ConnectPortResultState ConnectPortResultState { get; set; }
     }

@@ -45,7 +45,7 @@ namespace Task1.Enums
         NoAnswer,
         Ok
     }
-    public enum CallerTerminalState
+    public enum TerminalState
     {
         On,
         Default=On,
