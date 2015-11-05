@@ -23,6 +23,7 @@ namespace Task1.Enums
 
     public enum PortState
     {
+        Free,
         Unplugged,
         Default = Unplugged,
         Plugged,

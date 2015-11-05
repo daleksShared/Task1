@@ -11,12 +11,11 @@ namespace Task1.EventArgs
 
     public class HangUpEventArgs : System.EventArgs
     {
-        public int PortId
+        public Port Port
         {
             get; set;
         }
-
-        public int CallerId { get; set; }
+        public Terminal Terminal { get; set; }
     }
 
     public class CallerInsertSymbolEventArgs : System.EventArgs
@@ -44,8 +43,8 @@ namespace Task1.EventArgs
     public class CallEventArgs : System.EventArgs
     {
         public DateTime StartTime { get; set; }
-        public int CallerId { get; set; }
-        public int CalleeId { get; set; }
+        public Caller Caller { get; set; }
+        public Caller Callee { get; set; }
         public ConnectCallerResultState ConnectCallerResultState { get; set; }
     }
     public class PortEventArgs : System.EventArgs

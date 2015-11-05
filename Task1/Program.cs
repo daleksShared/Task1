@@ -14,8 +14,7 @@ namespace Task1
         {
             ats= new ModelAts(@"data source=(localdb)\MSSQLLocalDB;Initial Catalog=Task1;Integrated Security=True;");
 
-            ats.billingGlobalTimer.Elapsed += BillingGlobalTimer_Elapsed;
-
+           
 
             DbInit();
             
@@ -24,10 +23,7 @@ namespace Task1
             Console.ReadKey();
         }
 
-        private static void BillingGlobalTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         private static void DbInit()
         {
